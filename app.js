@@ -2,6 +2,45 @@
 const express = require('express');
 const app = express();
 const PORT = 3000;
+const { Server } = require("socket.io");
+const server = http.createServer(app);
+const io = new Server(server);
+app.set('io', io);
+
+
+const index = require('./routes/index');
+
+
+var mqtt = require('mqtt');
+var client = mqtt.connect('mqtt://127.0.0.1:1883');
+
+
+client.on('connect', function () {
+  console.log("MQTT connecté !");
+});
+client.subscribe('RAM/#');
+
+client.on('message', function (topic, message) {
+  const [element, gestion, lecture, capteur] = topic.toString().split('/');
+  const contenu = message.toString().trim();
+
+  const texte = contenu;
+  //const commandesMajuscules = ['DELETE', 'NEW', 'MODULE', 'ITEM'];
+
+  const commande = commandesMajuscules.includes(texte.toUpperCase())
+    ? texte.toUpperCase()
+    : texte;
+
+ if (element === 'RAM' && lecture === 'ETATS') {
+        io.emit(gestion, {
+            capteur: capteur,
+            texte: texte
+        });
+    }
+
+console.log(element, gestion, lecture, capteur);
+});
+
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use(express.static('./public'));
