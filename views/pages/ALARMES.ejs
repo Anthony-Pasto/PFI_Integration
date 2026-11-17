@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head><%- include('../partials/head') %></head>
+
+<body>
+    <%- include('../partials/header') %>
+        <main>
+            <h2>ALARMES</h2>
+            
+        </main>
+        <%- include('../partials/footer') %>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+    const socket = io();
+
+socket.on('ALARMES', function(data) {
+        console.log(data.capteur);
+        console.log(data.texte);
+    });
+</script>
+
+</html>

@@ -46,7 +46,13 @@ app.set('views', './views');
 app.use(express.static('./public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(require('./routes/index'));
+app.use(require('./routes/ASPIRATEUR'));
+app.use(require('./routes/BALANCE'));
+app.use(require('./routes/PANNEAU'));
+app.use(require('./routes/POWERMETER'));
+app.use(require('./routes/MELANGEUR'));
+app.use(require('./routes/ALARMES'));
+app.use(require('./routes/POWERMETER'));
 app.use('/contacts', require('./routes/contacts'));
 app.use((req, res) => res.status(404).render('pages/404', { title: 'Page introuvable' }));
 app.use((err, req, res, next) => {
