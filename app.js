@@ -15,6 +15,8 @@ var connection = mysql.createConnection({
   database: 'PaysG20'
 });
 const session = require('cookie-session');
+var mqtt = require('mqtt');
+var client = mqtt.connect('mqtt://127.0.0.1:1883');
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -40,8 +42,7 @@ connection.connect(function (err) {
 const index = require('./routes/index');
 
 
-var mqtt = require('mqtt');
-var client = mqtt.connect('mqtt://127.0.0.1:1883');
+
 
 
 client.on('connect', function () {
@@ -54,13 +55,7 @@ client.on('message', function (topic, message) {
   const [element, gestion, lecture, capteur] = topic.toString().split('/');
   const contenu = message.toString().trim();
 
-  const texte = contenu;
-  //const commandesMajuscules = ['DELETE', 'NEW', 'MODULE', 'ITEM'];
-
-  const commande = commandesMajuscules.includes(texte.toUpperCase())
-    ? texte.toUpperCase()
-    : texte;
-
+const texte = contenu;
   if (element === 'RAM' && lecture === 'ETATS') {
     io.emit(gestion, {
       capteur: capteur,
@@ -69,6 +64,43 @@ client.on('message', function (topic, message) {
   }
 
   console.log(element, gestion, lecture, capteur);
+});
+io.on('connection', function(socket) {
+
+    console.log('Client Web connecté :', socket.id);
+
+    socket.on('commandeMQTT', function(data) {
+
+        const topic = data?.topic;
+        const valeur = String(data?.valeur ?? '').trim();
+
+        // Vérification du topic et de la valeur
+        if (
+            typeof topic !== 'string' ||
+            !/^RAM\/[A-Za-z0-9_]+\/CMD\/[A-Za-z0-9_]+$/.test(topic) ||
+            valeur === ''
+        ) {
+            console.log('Commande MQTT invalide');
+            return;
+        }
+
+        if (!client.connected) {
+            console.log('MQTT non connecté');
+            return;
+        }
+
+        client.publish(topic, valeur, function(err) {
+
+            if (err) {
+                console.error('Erreur MQTT :', err);
+            } else {
+                console.log(`MQTT publié : ${topic} = ${valeur}`);
+            }
+
+        });
+
+    });
+
 });
 
 app.set('view engine', 'ejs');
