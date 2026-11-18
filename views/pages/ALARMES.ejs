@@ -7,7 +7,14 @@
     <%- include('../partials/header') %>
         <main>
             <h2>ALARMES</h2>
-            
+            <p>Grand bassin overflow : <span id="ALR_GB_OVF">--</span> </p>
+            <p>Petit bassin overflow : <span id="ALR_PB_OVF">--</span> </p>
+            <p>Grand bassin niveau max : <span id="ALR_GB_NIV_MAX">--</span> </p>
+            <p>Petit bassin niveau max : <span id="ALR_PB_NIV_MAX">--</span> </p>
+            <p>Perte de connexion (balance) : <span id="ALR_CNX_BAL">--</span></p>
+            <p>Perte de connexion (powermeter) : <span id="ALR_CNX_POW">--</span></p>
+
+
         </main>
         <%- include('../partials/footer') %>
 </body>
@@ -16,9 +23,42 @@
 <script>
     const socket = io();
 
-socket.on('ALARMES', function(data) {
+    socket.on('ALARMES', function (data) {
         console.log(data.capteur);
         console.log(data.texte);
+        const element = document.getElementById(capteur);
+
+        if (!element) return;
+
+        const nombre = Number(texte);
+        let valide = false;
+
+        switch (capteur) {
+
+            // Alarmes de débordement
+            case 'ALR_GB_OVF':
+            case 'ALR_PB_OVF':
+
+            // Alarmes de niveau maximal
+            case 'ALR_GB_NIV_MAX':
+            case 'ALR_PB_NIV_MAX':
+
+            // Alarmes de connexion
+            case 'ALR_CNX_BAL':
+            case 'ALR_CNX_POW':
+                valide = ['ON', 'OFF'].includes(texte);
+                break;
+
+            default:
+                console.log('Alarme inconnue :', capteur);
+                return;
+        }
+
+        if (valide) {
+            element.textContent = texte;
+        } else {
+            console.log('Valeur invalide :', capteur, texte);
+        }
     });
 </script>
 

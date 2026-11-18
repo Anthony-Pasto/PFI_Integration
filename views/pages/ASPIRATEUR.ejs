@@ -7,7 +7,13 @@
     <%- include('../partials/header') %>
         <main>
             <h2>ASPIRATEUR</h2>
-           
+            <p>Séquence de fonctionnement : <span id="sequence">--</span> </p>
+            <p>Niveau A : <span id="NivA">--</span> %</p>
+            <p>Niveau B : <span id="NivB">--</span> %</p>
+            <p>Niveau C : <span id="NivC">--</span> %</p>
+
+
+
         </main>
         <%- include('../partials/footer') %>
 </body>
@@ -16,9 +22,43 @@
 <script>
     const socket = io();
 
-    socket.on('ASPIRATEUR', function(data) {
+    socket.on('ASPIRATEUR', function (data) {
         console.log(data.capteur);
         console.log(data.texte);
+        const element = document.getElementById(capteur);
+
+        if (!element) return;
+
+        const nombre = Number(texte);
+        let valide = false;
+
+        switch (capteur) {
+
+            // Séquence de fonctionnement
+            case 'sequence':
+                valide = ['ON', 'OFF', 'AUTO', 'MANUEL', 'PAUSE'].includes(texte);
+                break;
+
+            // Niveaux en pourcentage
+            case 'NivA':
+            case 'NivB':
+            case 'NivC':
+                valide = /^\d+(\.\d{1,2})?$/.test(texte)
+                    && nombre >= 0 && nombre <= 100;
+                break;
+
+            default:
+                console.log('Capteur inconnu :', capteur);
+                return;
+        }
+
+
+        if (valide) {
+            element.textContent = texte;
+        } else {
+            console.log('Valeur invalide :', capteur, texte);
+        }
     });
 </script>
+
 </html>

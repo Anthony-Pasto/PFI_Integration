@@ -6,9 +6,17 @@
 <body>
     <%- include('../partials/header') %>
         <main>
-            <h2>POWERMETER</h2>
-           
-                    
+            <h2>POWERMETER</h2> 
+            <p>Tension Van: <span id="Van">--</span> V</p>
+            <p>Tension Vbn: <span id="Vbn">--</span> V</p>
+            <p>Tension Vab: <span id="Vab">--</span> V</p>
+            <p>Amperage a : <span id="Ia">--</span> A</p>
+            <p>Amperage b : <span id="Ib">--</span>A</p>
+            <p>puissance active : <span id="KW">--</span> W</p>
+            <p>L’énergie : <span id="KWh">--</span> Wh</p>
+            <p>Fateur puissance : <span id="FP">--</span> %</p>
+
+
         </main>
         <%- include('../partials/footer') %>
 </body>
@@ -17,9 +25,56 @@
 <script>
     const socket = io();
 
-    socket.on('POWERMETER', function(data) {
-        console.log(data.capteur);
-        console.log(data.texte);
+    socket.on('POWERMETER', function (data) {
+        const capteur = data.capteur;
+        const texte = data.texte;
+
+        const element = document.getElementById(capteur);
+
+        if (!element) return;
+
+        const nombre = Number(texte);
+        let valide = false;
+
+        switch (capteur) {
+
+            // Tensions (V)
+            case 'Van':
+            case 'Vbn':
+            case 'Vab':
+                valide = /^\d+(\.\d{1,2})?$/.test(texte);
+                break;
+
+            // Courants (A)
+            case 'Ia':
+            case 'Ib':
+                valide = /^\d+(\.\d{1,3})?$/.test(texte);
+                break;
+
+            // Puissance et énergie
+            case 'KW':
+            case 'KWh':
+                valide = /^\d+(\.\d{1,3})?$/.test(texte);
+                break;
+
+            // Facteur de puissance (%)
+            case 'FP':
+                valide = /^\d+(\.\d{1,2})?$/.test(texte)
+                    && nombre >= 0 && nombre <= 100;
+                break;
+
+            default:
+                console.log('Capteur inconnu :', capteur);
+                return;
+        }
+
+        if (valide) {
+            element.textContent = texte;
+        } else {
+            console.log('Valeur invalide :', capteur, texte);
+        }
+
     });
 </script>
+
 </html>

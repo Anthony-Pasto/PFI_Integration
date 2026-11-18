@@ -7,7 +7,11 @@
     <%- include('../partials/header') %>
         <main>
             <h2>MELANGEUR</h2>
-           
+            <p>Statut de la recette : <span id="recetteStatut">--</span> </p>
+            <p>Moteur A : <span id="motA">--</span> </p>
+            <p>Moteur B : <span id="motB">--</span> </p>
+            <p>Moteur C : <span id="motC">--</span> </p>
+
         </main>
         <%- include('../partials/footer') %>
 </body>
@@ -16,9 +20,41 @@
 <script>
     const socket = io();
 
-    socket.on('MELANGEUR', function(data) {
+    socket.on('MELANGEUR', function (data) {
         console.log(data.capteur);
         console.log(data.texte);
+        const element = document.getElementById(capteur);
+
+        if (!element) return;
+
+        const nombre = Number(texte);
+        let valide = false;
+
+        switch (capteur) {
+
+            // État de la recette
+            case 'recetteStatut':
+                valide = ['PROCESSING', 'FINISHED'].includes(texte);
+                break;
+
+            // Moteurs A, B et C
+            case 'motA':
+            case 'motB':
+            case 'motC':
+                valide = ['ON', 'OFF'].includes(texte);
+                break;
+
+            default:
+                console.log('Capteur inconnu :', capteur);
+                return;
+        }
+
+        if (valide) {
+            element.textContent = texte;
+        } else {
+            console.log('Valeur invalide :', capteur, texte);
+        }
     });
 </script>
+
 </html>

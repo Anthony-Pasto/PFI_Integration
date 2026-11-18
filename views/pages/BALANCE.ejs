@@ -7,6 +7,11 @@
     <%- include('../partials/header') %>
         <main>
             <h2>BALANCE</h2>
+            <p>Poids : <span id="poids">--</span> </p>
+            <p>Tare : <span id="tare">--</span> </p>
+            <p>Unité : <span id="unite">--</span> </p>
+
+
            
         </main>
         <%- include('../partials/footer') %>
@@ -19,6 +24,40 @@
     socket.on('BALANCE', function(data) {
         console.log(data.capteur);
         console.log(data.texte);
+          const element = document.getElementById(capteur);
+
+        if (!element) return;
+
+        const nombre = Number(texte);
+        let valide = false;
+
+         switch (capteur) {
+
+            // Poids : nombre avec maximum 3 décimales
+            case 'poids':
+                valide = /^-?\d+(\.\d{1,3})?$/.test(texte);
+                break;
+
+            // Tare : ON ou OFF
+            case 'tare':
+                valide = ['ON', 'OFF'].includes(texte);
+                break;
+
+            // Unité de mesure
+            case 'unite':
+                valide = ['kg', 'g', 'lb', 'oz'].includes(texte);
+                break;
+
+            default:
+                console.log('Capteur inconnu :', capteur);
+                return;
+        }
+
+        if (valide) {
+            element.textContent = texte;
+        } else {
+            console.log('Valeur invalide :', capteur, texte);
+        }
     });
 </script>
 </html>

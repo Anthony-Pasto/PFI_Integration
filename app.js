@@ -31,14 +31,14 @@ client.on('message', function (topic, message) {
     ? texte.toUpperCase()
     : texte;
 
- if (element === 'RAM' && lecture === 'ETATS') {
-        io.emit(gestion, {
-            capteur: capteur,
-            texte: texte
-        });
-    }
+  if (element === 'RAM' && lecture === 'ETATS') {
+    io.emit(gestion, {
+      capteur: capteur,
+      texte: texte
+    });
+  }
 
-console.log(element, gestion, lecture, capteur);
+  console.log(element, gestion, lecture, capteur);
 });
 
 app.set('view engine', 'ejs');
@@ -52,7 +52,8 @@ app.use(require('./routes/PANNEAU'));
 app.use(require('./routes/POWERMETER'));
 app.use(require('./routes/MELANGEUR'));
 app.use(require('./routes/ALARMES'));
-app.use(require('./routes/POWERMETER'));
+app.use(require('./routes/VALVES'));
+
 app.use('/contacts', require('./routes/contacts'));
 app.use((req, res) => res.status(404).render('pages/404', { title: 'Page introuvable' }));
 app.use((err, req, res, next) => {

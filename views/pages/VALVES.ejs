@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head><%- include('../partials/head') %></head>
+
+<body>
+    <%- include('../partials/header') %>
+        <main>
+            <h2>VALVES</h2> 
+            <p>Ouverture petit bassin : <span id="Ouverture_PB">--</span> %</p>
+            <p>Ouverture grand bassin : <span id="Ouverture_GB">--</span> %</p>
+
+
+
+        </main>
+        <%- include('../partials/footer') %>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+    const socket = io();
+
+    socket.on('VALVES', function (data) {
+        const capteur = data.capteur;
+        const texte = data.texte;
+
+        const element = document.getElementById(capteur);
+
+        if (!element) return;
+
+        const nombre = Number(texte);
+        let valide = false;
+
+        switch (capteur) {
+
+            // Ouverture en pourcentage (0 à 100 %)
+            case 'Ouverture_PB':
+            case 'Ouverture_GB':
+                valide = /^\d+(\.\d{1,2})?$/.test(texte)
+                    && nombre >= 0 && nombre <= 100;
+                break;
+
+            default:
+                console.log('Capteur inconnu :', capteur);
+                return;
+        }
+
+        if (valide) {
+            element.textContent = texte;
+        } else {
+            console.log('Valeur invalide :', capteur, texte);
+        }
+
+    });
+</script>
+
+</html>
