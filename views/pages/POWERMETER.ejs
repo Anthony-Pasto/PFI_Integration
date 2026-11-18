@@ -20,10 +20,10 @@
         </main>
         <%- include('../partials/footer') %>
 </body>
-<script src="/socket.io/socket.io.js"></script>
+
 
 <script>
-    const socket = io();
+
 
     socket.on('POWERMETER', function (data) {
         const capteur = data.capteur;

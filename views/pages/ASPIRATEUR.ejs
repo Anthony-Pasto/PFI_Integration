@@ -12,15 +12,19 @@
             <p>Niveau B : <span id="NivB">--</span> %</p>
             <p>Niveau C : <span id="NivC">--</span> %</p>
 
-
+            <button onclick="envoyerMQTT('ASPIRATEUR', 'ValveGB', 'ON')">
+    Ouvrir GB
+</button>
+    Ouvrir GB
+</button>
 
         </main>
         <%- include('../partials/footer') %>
 </body>
-<script src="/socket.io/socket.io.js"></script>
+
 
 <script>
-    const socket = io();
+  
 
     socket.on('ASPIRATEUR', function (data) {
         console.log(data.capteur);

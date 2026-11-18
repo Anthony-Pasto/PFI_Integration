@@ -18,15 +18,52 @@
             <p>État valve eau froide : <span id="ValveEEF">--</span> </p>
             <p>État pompe : <span id="Pompe">--</span> </p>
             <p>État mode : <span id="Mode">--</span> </p>
+<form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'Mode', this.paiement.value)">
+
+    <select class="form-select" id="paiement" name="paiement" required>
+
+        <option value="" disabled selected>
+            Choisir un mode
+        </option>
+
+        <option value="AUTO">Auto</option>
+        <option value="MANUEL">Manuel</option>
+
+    </select>
+
+    <button type="submit">Envoyer</button>
+
+</form>
+
+
+<form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'NivGB', this.quantite.value)">
+
+    <div>
+        <label class="form-label fw-bold">
+            Niveau grand bassin
+        </label>
+
+        <input
+            class="form-control"
+            type="number"
+            name="quantite"
+            min="0"
+            max="100"
+            required
+        >
+    </div>
+
+    <button type="submit">Envoyer</button>
+
+</form>
 
 
         </main>
         <%- include('../partials/footer') %>
 </body>
-<script src="/socket.io/socket.io.js"></script>
+
 
 <script>
-    const socket = io();
 
     socket.on('PANNEAU', function (data) {
         console.log(data.capteur);

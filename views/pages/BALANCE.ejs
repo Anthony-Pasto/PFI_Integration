@@ -16,10 +16,9 @@
         </main>
         <%- include('../partials/footer') %>
 </body>
-<script src="/socket.io/socket.io.js"></script>
+
 
 <script>
-    const socket = io();
 
     socket.on('BALANCE', function(data) {
         console.log(data.capteur);
