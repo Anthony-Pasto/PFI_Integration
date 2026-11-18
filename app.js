@@ -117,7 +117,6 @@ app.use('/melangeur', require('./routes/MELANGEUR'));
 app.use('/alarmes', require('./routes/ALARMES'));
 app.use('/valves', require('./routes/VALVES'));
 
-app.use('/contacts', require('./routes/contacts'));
 app.use((req, res) => res.status(404).render('pages/404', { title: 'Page introuvable' }));
 app.use((err, req, res, next) => {
   res.locals.message = err.message;

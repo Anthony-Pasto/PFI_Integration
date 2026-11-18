@@ -1,13 +1,84 @@
-# Squelette Express et EJS
+# PFI - Tableau de contrôle industriel
 
-## Démarrer
+Application web Node.js permettant de visualiser les états des équipements et d'envoyer des commandes MQTT.
 
-1. Installe Node.js sur ton ordinateur.
-2. Dans ce dossier, exécute `npm install`.
-3. Lance `npm start`.
-4. Ouvre http://localhost:3000 puis http://localhost:3000/contacts.
+## Technologies
 
-Le formulaire de contact affiche une confirmation et écrit les données dans la console du serveur. Il ne sauvegarde ni n'envoie de message.
+- Node.js
+- Express 5
+- EJS
+- Socket.IO
+- MQTT
+- MySQL
+- cookie-session
 
-Pour ajouter une page, crée son fichier dans `routes/`, sa vue dans `views/pages/`, puis ajoute sa route dans `app.js`.
-# PFI_Integration
+## Prérequis
+
+- Node.js installé
+- Un courtier MQTT accessible sur `mqtt://127.0.0.1:1883`
+- MySQL avec une base de données nommée `PaysG20`
+
+Les paramètres MySQL actuels sont définis dans `app.js` :
+
+- Hôte : `localhost`
+- Utilisateur : `root`
+- Mot de passe : `root`
+- Base de données : `PaysG20`
+
+## Installation
+
+```bash
+npm install
+```
+
+## Démarrage
+
+```bash
+npm start
+```
+
+L'application est disponible à l'adresse :
+
+<http://localhost:3000>
+
+## Pages disponibles
+
+- `/` - Tableau de bord
+- `/aspirateur` - Aspirateur
+- `/balance` - Balance
+- `/panneau` - Panneau
+- `/powermeter` - Power Meter
+- `/melangeur` - Mélangeur
+- `/alarmes` - Alarmes
+- `/valves` - Valves
+
+## Communication MQTT
+
+Le serveur s'abonne aux sujets commençant par `RAM/#`.
+
+Les sujets des états doivent respecter la structure :
+
+```text
+RAM/<module>/ETATS/<capteur>
+```
+
+Les commandes envoyées depuis le navigateur sont publiées avec le format :
+
+```text
+RAM/<module>/CMD/<capteur>
+```
+
+## Structure du projet
+
+```text
+app.js              Configuration du serveur Express, Socket.IO, MQTT et MySQL
+routes/             Définitions des routes
+views/pages/        Pages EJS
+views/partials/     En-tête, pied de page et éléments communs
+public/css/         Feuilles de style
+public/js/          Scripts côté navigateur
+public/images/      Images
+```
+
+
+

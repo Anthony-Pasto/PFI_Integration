@@ -1,6 +1,64 @@
 <!DOCTYPE html>
-<html lang="fr"><head><%- include('../partials/head') %></head><body>
-<%- include('../partials/header') %>
-<main><h2>Accueil</h2><p>Bienvenue sur mon application Node.js, Express et EJS.</p><p>Le serveur fonctionne correctement.</p></main>
-<%- include('../partials/footer') %>
-</body></html>
+<html lang="fr">
+
+<head><%- include('../partials/head') %></head>
+
+<body>
+    <%- include('../partials/header') %>
+<!-- Generer par AI -->
+    <main class="dashboard">
+        <section class="dashboard-intro">
+            <p class="eyebrow">TABLEAU DE CONTRÔLE</p>
+            <h2>Bienvenue</h2>
+            <p>Accédez rapidement aux différents modules de l'application.</p>
+        </section>
+
+        <section class="module-grid" aria-label="Modules disponibles">
+            <a class="module-card aspirateur" href="/aspirateur">
+                <span class="module-icon">🧹</span>
+                <span class="module-name">Aspirateur</span>
+                <span class="module-action">Ouvrir le module →</span>
+            </a>
+
+            <a class="module-card balance" href="/balance">
+                <span class="module-icon">⚖️</span>
+                <span class="module-name">Balance</span>
+                <span class="module-action">Ouvrir le module →</span>
+            </a>
+
+            <a class="module-card panneau" href="/panneau">
+                <span class="module-icon">📟</span>
+                <span class="module-name">Panneau</span>
+                <span class="module-action">Ouvrir le module →</span>
+            </a>
+
+            <a class="module-card powermeter" href="/powermeter">
+                <span class="module-icon">⚡</span>
+                <span class="module-name">Power Meter</span>
+                <span class="module-action">Ouvrir le module →</span>
+            </a>
+
+            <a class="module-card melangeur" href="/melangeur">
+                <span class="module-icon">🔄</span>
+                <span class="module-name">Mélangeur</span>
+                <span class="module-action">Ouvrir le module →</span>
+            </a>
+
+            <a class="module-card alarmes" href="/alarmes">
+                <span class="module-icon">🚨</span>
+                <span class="module-name">Alarmes</span>
+                <span class="module-action">Ouvrir le module →</span>
+            </a>
+
+            <a class="module-card valves" href="/valves">
+                <span class="module-icon">🔧</span>
+                <span class="module-name">Valves</span>
+                <span class="module-action">Ouvrir le module →</span>
+            </a>
+        </section>
+    </main>
+<!-- Fin Generer par AI -->
+    <%- include('../partials/footer') %>
+</body>
+
+</html>
