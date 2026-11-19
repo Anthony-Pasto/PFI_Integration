@@ -1,0 +1,39 @@
+<!--!
+@file connexion.ejs
+@brief Affiche les erreurs et le formulaire d'authentification.
+@author Anthony
+@date 2026-11-03
+-->
+<!DOCTYPE html>
+<html lang="fr">
+
+<head><%- include('../partials/head') %></head>
+
+<body>
+    <%- include('../partials/header') %>
+        <main>
+            <h2>Connexion</h2>
+            <% if (typeof confirmation !=='undefined' ) { %>
+                <p role="status">
+                    <%= confirmation %>
+                </p>
+                <% } %>
+                    <% if (typeof error !=='undefined' ) { %>
+                        <p role="alert">
+                            <%= error %>
+                        </p>
+                        <% } %>
+                            <!--! @brief Envoie le nom et le mot de passe a la route d'authentification. -->
+                            <form action="/connexion" method="POST">
+                                <div><label for="name">Nom d'utilisateur</label><input type="text" id="name" name="name"
+                                        required>
+                                </div>
+                                <div><label for="password">Mot de passe</label><input type="password" id="password"
+                                        name="password" required></div>
+                                <button type="submit">Se connecter</button>
+                            </form>
+        </main>
+        <%- include('../partials/footer') %>
+</body>
+
+</html>

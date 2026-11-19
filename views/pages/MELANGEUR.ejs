@@ -11,6 +11,101 @@
             <p>Moteur A : <span id="motA">--</span> </p>
             <p>Moteur B : <span id="motB">--</span> </p>
             <p>Moteur C : <span id="motC">--</span> </p>
+            <form onsubmit="event.preventDefault(); envoyerMQTT('MELANGEUR', 'Mode', this.paiement.value)">
+
+                <select class="form-select" id="paiement" name="paiement" required>
+
+                    <option value="" disabled selected>
+                        Choisir un mode
+                    </option>
+
+                    <option value="AUTO">Auto</option>
+                    <option value="MANUEL">Manuel</option>
+
+                </select>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT('MELANGEUR', 'motA', this.paiement.value)">
+
+                <select class="form-select" id="paiement" name="paiement" required>
+
+                    <option value="" disabled selected>
+                        Choisir un mode
+                    </option>
+
+                    <option value="ON">ON</option>
+                    <option value="OFF">OFF</option>
+
+                </select>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT('MELANGEUR', 'motB', this.paiement.value)">
+
+                <select class="form-select" id="paiement" name="paiement" required>
+
+                    <option value="" disabled selected>
+                        Choisir un mode
+                    </option>
+
+                    <option value="ON">ON</option>
+                    <option value="OFF">OFF</option>
+
+                </select>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT('MELANGEUR', 'motC', this.paiement.value)">
+
+                <select class="form-select" id="paiement" name="paiement" required>
+
+                    <option value="" disabled selected>
+                        Choisir un mode
+                    </option>
+
+                    <option value="ON">ON</option>
+                    <option value="OFF">OFF</option>
+
+                </select>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT('MELANGEUR', 'recette', this.paiement.value)">
+
+                <div>
+                    <label class="form-label fw-bold">
+                        Recette
+                    </label>
+
+                    <input class="form-control" type="number" name="quantite" placeholder="100-100-100"
+                        pattern="[0-999]-[0-999]-[0-999]"required>
+                </div>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT('MELANGEUR', 'recetteGo', this.paiement.value)">
+
+                <select class="form-select" id="paiement" name="paiement" required>
+
+                    <option value="" disabled selected>
+                        Choisir un mode
+                    </option>
+
+                    <option value="stop">stop </option>
+                    <option value="go">go </option>
+                    <option value="flush">flush </option>
+
+                </select>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
 
         </main>
         <%- include('../partials/footer') %>

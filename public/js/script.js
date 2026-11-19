@@ -12,3 +12,11 @@ function envoyerMQTT(module, capteur, valeur) {
         valeur: valeur
     });
 }
+function envoyerMQTT_ACK( capteur) {
+    console.log(`Commande MQTT : RAM/ALARMES/ETAT/${capteur} = ACK`);
+
+    socket.emit('commandeMQTT', {
+        topic: `RAM/ALARMES/ETAT/${capteur}`,
+        valeur: ACK
+    });
+}

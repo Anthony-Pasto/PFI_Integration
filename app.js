@@ -20,11 +20,11 @@ var client = mqtt.connect('mqtt://127.0.0.1:1883');
 
 app.use(express.urlencoded({ extended: true }));
 
-/** @brief Partage une session signee entre toutes les routes pendant 24 heures. */
+/** @brief Partage une session signee entre toutes les routes pendant 5 minutes. */
 app.use(session({
   name: 'session',
   keys: ['ma-cle-secrete-a-remplacer'],
-  maxAge: 24 * 60 * 60 * 1000, // 24 heures
+  maxAge:  5 * 1000, // 5 minutes
   httpOnly: true,
   sameSite: 'lax'
 }));
@@ -108,14 +108,32 @@ app.set('views', './views');
 app.use(express.static('./public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use('/', require('./routes/index'));
-app.use('/aspirateur', require('./routes/ASPIRATEUR'));
-app.use('/balance', require('./routes/BALANCE'));
-app.use('/panneau', require('./routes/PANNEAU'));
-app.use('/powermeter', require('./routes/POWERMETER'));
-app.use('/melangeur', require('./routes/MELANGEUR'));
-app.use('/alarmes', require('./routes/ALARMES'));
-app.use('/valves', require('./routes/VALVES'));
+
+function requireAuth(req, res, next) {
+  if (!req.session || !req.session.user) {
+    return res.redirect('/connexion');
+  }
+  next();
+}
+
+app.use('/deconnexion', require('./routes/deconnexion'));
+app.use('/connexion', require('./routes/connexion'));
+
+app.get('/', (req, res) => {
+  if (req.session && req.session.user) {
+    return res.redirect('/acceuil');
+  }
+  return res.redirect('/connexion');
+});
+
+app.use('/acceuil', requireAuth, require('./routes/index'));
+app.use('/aspirateur', requireAuth, require('./routes/ASPIRATEUR'));
+app.use('/balance', requireAuth, require('./routes/BALANCE'));
+app.use('/panneau', requireAuth, require('./routes/PANNEAU'));
+app.use('/powermeter', requireAuth, require('./routes/POWERMETER'));
+app.use('/melangeur', requireAuth, require('./routes/MELANGEUR'));
+app.use('/alarmes', requireAuth, require('./routes/ALARMES'));
+app.use('/valves', requireAuth, require('./routes/VALVES'));
 
 app.use((req, res) => res.status(404).render('pages/404', { title: 'Page introuvable' }));
 app.use((err, req, res, next) => {

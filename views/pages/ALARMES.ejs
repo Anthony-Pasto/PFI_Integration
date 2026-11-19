@@ -14,6 +14,164 @@
             <p>Perte de connexion (balance) : <span id="ALR_CNX_BAL">--</span></p>
             <p>Perte de connexion (powermeter) : <span id="ALR_CNX_POW">--</span></p>
 
+             <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'NivLhGB', this.paiement.value)">
+
+                <div>
+                    <label class="form-label fw-bold">
+                        Niveau limite haut grand bassin
+                    </label>
+
+                    <input class="form-control" type="number" name="quantite" min="0" max="100" required>
+                </div>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'TgNivGB', this.paiement.value)">
+
+                <div>
+                    <label class="form-label fw-bold">
+                        temps Generation grand bassin 
+                    </label>
+
+                    <input class="form-control" type="number" name="quantite" min="0" max="100" required>
+                </div>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'TrNivGB', this.paiement.value)">
+
+                <div>
+                    <label class="form-label fw-bold">
+                        temps Repetition  grand bassin 
+                    </label>
+
+                    <input class="form-control" type="number" name="quantite" min="0" max="100" required>
+                </div>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'NivLhPB', this.paiement.value)">
+
+                <div>
+                    <label class="form-label fw-bold">
+                        Niveau limite haut petit bassin
+                    </label>
+
+                    <input class="form-control" type="number" name="quantite" min="0" max="100" required>
+                </div>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'TgNivPB', this.paiement.value)">
+
+                <div>
+                    <label class="form-label fw-bold">
+                        temps Generation petit bassin 
+                    </label>
+
+                    <input class="form-control" type="number" name="quantite" min="0" max="100" required>
+                </div>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'TrNivPB', this.paiement.value)">
+
+                <div>
+                    <label class="form-label fw-bold">
+                        temps Repetition  petit bassin 
+                    </label>
+
+                    <input class="form-control" type="number" name="quantite" min="0" max="100" required>
+                </div>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+
+            <form onsubmit="event.preventDefault(); envoyerMQTT_ACK('ALR_GB_OVF')">
+
+                <div>
+                    <label class="form-label fw-bold">
+                        eteindre alarme grand bassin overflow
+                    </label>
+
+                    <input class="form-control" type="text"> // mettre le message dans un log
+                </div>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT_ACK('ALR_PB_OVF')">
+
+                <div>
+                    <label class="form-label fw-bold">
+                        eteindre alarme petit bassin overflow
+                    </label>
+
+                    <input class="form-control" type="text"> // mettre le message dans un log
+                </div>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT_ACK('ALR_GB_NIV_MAX')">
+
+                <div>
+                    <label class="form-label fw-bold">
+                        eteindre alarme grand bassin niveau maximum
+                    </label>
+
+                    <input class="form-control" type="text"> // mettre le message dans un log
+                </div>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT_ACK('ALR_PB_NIV_MAX')">
+
+                <div>
+                    <label class="form-label fw-bold">
+                        eteindre alarme petit bassin niveau maximum
+                    </label>
+
+                    <input class="form-control" type="text"> // mettre le message dans un log
+                </div>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT_ACK('ALR_CNX_BAL')">
+
+                <div>
+                    <label class="form-label fw-bold">
+                        eteindre alarme perte de connexion balance
+                    </label>
+
+                    <input class="form-control" type="text"> // mettre le message dans un log
+                </div>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+            <form onsubmit="event.preventDefault(); envoyerMQTT_ACK('ALR_CNX_POW')">
+
+                <div>
+                    <label class="form-label fw-bold">
+                        eteindre alarme perte de connexion puissance
+                    </label>
+
+                    <input class="form-control" type="text"> // mettre le message dans un log
+                </div>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
+
 
         </main>
         <%- include('../partials/footer') %>

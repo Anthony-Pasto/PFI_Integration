@@ -12,11 +12,22 @@
             <p>Niveau B : <span id="NivB">--</span> %</p>
             <p>Niveau C : <span id="NivC">--</span> %</p>
 
-            <button onclick="envoyerMQTT('ASPIRATEUR', 'ValveGB', 'ON')">
-    Ouvrir GB
-</button>
-    Ouvrir GB
-</button>
+           <form onsubmit="event.preventDefault(); envoyerMQTT('ASPIRATEUR', 'force', this.paiement.value)">
+
+                <select class="form-select" id="paiement" name="paiement" required>
+
+                    <option value="" disabled selected>
+                        allumer ou eteindre l'aspirateur
+                    </option>
+
+                    <option value="GO">GO</option>
+                    <option value="STOP">STOP</option>
+
+                </select>
+
+                <button type="submit">Envoyer</button>
+
+            </form>
 
         </main>
         <%- include('../partials/footer') %>
