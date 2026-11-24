@@ -1,1 +1,3 @@
-Faire et sorte que si une personne est pas connecter la premeir chose qu'elle a a fair c ce connecter si elle l'ai daja faire en sorte quelle rentre directement sur la page actuelle ( avec les beau logo)
+faire le log
+rendre beau les page d'envoi et de reception 
+mettre en place le systeme de droit 

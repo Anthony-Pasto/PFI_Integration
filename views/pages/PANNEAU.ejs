@@ -16,9 +16,10 @@
             <p>Ouverture eau froide : <span id="ValveEF">--</span> %</p>
             <p>État valve eau chaude : <span id="ValveEEC">--</span> </p>
             <p>État valve eau froide : <span id="ValveEEF">--</span> </p>
+            <p>État température active : <span id="TemperatureActive">--</span> </p>
             <p>État pompe : <span id="Pompe">--</span> </p>
             <p>État mode : <span id="Mode">--</span> </p>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'Mode', this.paiement.value)">
+            <form onsubmit="event.preventDefault(); changerMode(this.paiement.value)">
 
                 <select class="form-select" id="paiement" name="paiement" required>
 
@@ -35,99 +36,51 @@
 
             </form>
 
+            <section id="commandes-auto" hidden>
+                <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ConsNivGB', this.quantite.value)">
 
-            <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'NivGB', this.quantite.value)">
+                    <div>
+                        <label class="form-label fw-bold">
+                            Niveau grand bassin
+                        </label>
 
-                <div>
-                    <label class="form-label fw-bold">
-                        Niveau grand bassin
-                    </label>
+                        <input class="form-control" type="number" name="quantite" min="0" max="100" required>
+                    </div>
 
-                    <input class="form-control" type="number" name="quantite" min="0" max="100" required>
-                </div>
+                    <button type="submit">Envoyer</button>
+                </form>
+                <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ConsNivPB', this.quantite.value)">
 
-                <button type="submit">Envoyer</button>
-            </form>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'NivPB', this.quantite.value)">
+                    <div>
+                        <label class="form-label fw-bold">
+                            Niveau petit bassin
+                        </label>
 
-                <div>
-                    <label class="form-label fw-bold">
-                        Niveau petit bassin
-                    </label>
+                        <input class="form-control" type="number" name="quantite" min="0" max="100" required>
+                    </div>
 
-                    <input class="form-control" type="number" name="quantite" min="0" max="100" required>
-                </div>
+                    <button type="submit">Envoyer</button>
+                </form>
+                <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ConsTmpPB', this.quantite.value)">
 
-                <button type="submit">Envoyer</button>
-            </form>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ConsTmpPB', this.quantite.value)">
+                    <div>
+                        <label class="form-label fw-bold">
+                            Température bassin
+                        </label>
 
-                <div>
-                    <label class="form-label fw-bold">
-                        Température bassin
-                    </label>
+                        <input class="form-control" type="number" name="quantite" min="0" max="100" required>
+                    </div>
 
-                    <input class="form-control" type="number" name="quantite" min="0" max="100" required>
-                </div>
-
-                <button type="submit">Envoyer</button>
-            </form>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ValveGB', this.quantite.value)">
-
-                <div>
-                    <label class="form-label fw-bold">
-                        Ouverture grand bassin
-                    </label>
-
-                    <input class="form-control" type="number" name="quantite" min="0" max="100" required>
-                </div>
-
-                <button type="submit">Envoyer</button>
-            </form>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ValvePB', this.quantite.value)">
-
-                <div>
-                    <label class="form-label fw-bold">
-                        Ouverture petit bassin
-                    </label>
-
-                    <input class="form-control" type="number" name="quantite" min="0" max="100" required>
-                </div>
-
-                <button type="submit">Envoyer</button>
-            </form>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ValveEC', this.quantite.value)">
-
-                <div>
-                    <label class="form-label fw-bold">
-                        Valve eau chaude
-                    </label>
-
-                    <input class="form-control" type="number" name="quantite" min="0" max="100" required>
-                </div>
-
-                <button type="submit">Envoyer</button>
-            </form>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ValveEF', this.quantite.value)">
-
-                <div>
-                    <label class="form-label fw-bold">
-                        Valve eau froide
-                    </label>
-
-                    <input class="form-control" type="number" name="quantite" min="0" max="100" required>
-                </div>
-
-                <button type="submit">Envoyer</button>
-
-            </form>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ValveEEC', this.paiement.value)">
+                    <button type="submit">Envoyer</button>
+                </form>
+                <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'TemperatureActive', this.paiement.value)">
 
                 <select class="form-select" id="paiement" name="paiement" required>
 
                     <option value="" disabled selected>
-                        Allumer ou éteindre la valve eau chaude
+                        Allumer ou éteindre la TemperatureActive
                     </option>
+
 
                     <option value="ON">ON</option>
                     <option value="OFF">OFF</option>
@@ -137,22 +90,93 @@
                 <button type="submit">Envoyer</button>
 
             </form>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ValveEEF', this.paiement.value)">
 
-                <select class="form-select" id="paiement" name="paiement" required>
+            </section>
+            <section id="commandes-manuel" hidden>
+                <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ValveGB', this.quantite.value)">
 
-                    <option value="" disabled selected>
-                        Allumer ou éteindre la valve eau froide
-                    </option>
+                    <div>
+                        <label class="form-label fw-bold">
+                            Ouverture grand bassin
+                        </label>
 
-                    <option value="ON">ON</option>
-                    <option value="OFF">OFF</option>
+                        <input class="form-control" type="number" name="quantite" min="0" max="100" required>
+                    </div>
 
-                </select>
+                    <button type="submit">Envoyer</button>
+                </form>
+                <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ValvePB', this.quantite.value)">
 
-                <button type="submit">Envoyer</button>
+                    <div>
+                        <label class="form-label fw-bold">
+                            Ouverture petit bassin
+                        </label>
 
-            </form>
+                        <input class="form-control" type="number" name="quantite" min="0" max="100" required>
+                    </div>
+
+                    <button type="submit">Envoyer</button>
+                </form>
+                <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ValveEC', this.quantite.value)">
+
+                    <div>
+                        <label class="form-label fw-bold">
+                            Valve eau chaude
+                        </label>
+
+                        <input class="form-control" type="number" name="quantite" min="0" max="100" required>
+                    </div>
+
+                    <button type="submit">Envoyer</button>
+                </form>
+                <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ValveEF', this.quantite.value)">
+
+                    <div>
+                        <label class="form-label fw-bold">
+                            Valve eau froide
+                        </label>
+
+                        <input class="form-control" type="number" name="quantite" min="0" max="100" required>
+                    </div>
+
+                    <button type="submit">Envoyer</button>
+
+                </form>
+                <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ValveEEC', this.paiement.value)">
+
+                    <select class="form-select" id="paiement" name="paiement" required>
+
+                        <option value="" disabled selected>
+                            Allumer ou éteindre la valve eau chaude
+                        </option>
+
+                        <option value="ON">ON</option>
+                        <option value="OFF">OFF</option>
+
+                    </select>
+
+                    <button type="submit">Envoyer</button>
+
+                </form>
+                <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'ValveEEF', this.paiement.value)">
+
+                    <select class="form-select" id="paiement" name="paiement" required>
+
+                        <option value="" disabled selected>
+                            Allumer ou éteindre la valve eau froide
+                        </option>
+
+                        <option value="ON">ON</option>
+                        <option value="OFF">OFF</option>
+
+                    </select>
+
+                    <button type="submit">Envoyer</button>
+
+                </form>
+
+
+            </section>
             <form onsubmit="event.preventDefault(); envoyerMQTT('PANNEAU', 'Pompe', this.paiement.value)">
 
                 <select class="form-select" id="paiement" name="paiement" required>
@@ -178,17 +202,31 @@
 
 
 <script>
+    function afficherMode(mode) {
+        const valeur = String(mode).trim().toUpperCase();
+        if (!['AUTO', 'MANUEL'].includes(valeur)) return;
+
+        document.getElementById('Mode').textContent = valeur;
+        document.getElementById('commandes-auto').hidden = valeur !== 'AUTO';
+        document.getElementById('commandes-manuel').hidden = valeur !== 'MANUEL';
+    }
+
+    function changerMode(mode) {
+        afficherMode(mode);
+        envoyerMQTT('PANNEAU', 'Mode', mode);
+    }
 
     socket.on('PANNEAU', function (data) {
- const capteur = data.capteur;
-        const texte = String(data.texte).trim();
+        const capteur = data.capteur;
+        const texteBrut = String(data.texte).trim();
+        const texte = capteur === 'Mode' ? texteBrut.toUpperCase() : texteBrut;
         const element = document.getElementById(capteur);
- console.log('MQTT reçu sur la page :', data);
+        console.log('MQTT reçu sur la page :', data);
         if (!element) return;
 
         const nombre = Number(texte);
         let valide = false;
-               
+
 
         switch (capteur) {
 
@@ -213,6 +251,7 @@
             case 'ValveEEC':
             case 'ValveEEF':
             case 'Pompe':
+            case 'TemperatureActive':
                 valide = ['ON', 'OFF'].includes(texte);
                 break;
 
@@ -228,6 +267,9 @@
 
         if (valide) {
             element.textContent = texte;
+            if (capteur === 'Mode') {
+                afficherMode(texte);
+            }
         } else {
             console.log('Valeur invalide :', capteur, texte);
         }

@@ -14,7 +14,7 @@
             <p>Perte de connexion (balance) : <span id="ALR_CNX_BAL">--</span></p>
             <p>Perte de connexion (powermeter) : <span id="ALR_CNX_POW">--</span></p>
 
-             <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'NivLhGB', this.paiement.value)">
+             <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'NivLhGB', this.quantite.value)">
 
                 <div>
                     <label class="form-label fw-bold">
@@ -27,7 +27,7 @@
                 <button type="submit">Envoyer</button>
 
             </form>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'TgNivGB', this.paiement.value)">
+            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'TgNivGB', this.quantite.value)">
 
                 <div>
                     <label class="form-label fw-bold">
@@ -40,7 +40,7 @@
                 <button type="submit">Envoyer</button>
 
             </form>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'TrNivGB', this.paiement.value)">
+            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'TrNivGB', this.quantite.value)">
 
                 <div>
                     <label class="form-label fw-bold">
@@ -53,7 +53,7 @@
                 <button type="submit">Envoyer</button>
 
             </form>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'NivLhPB', this.paiement.value)">
+            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'NivLhPB', this.quantite.value)">
 
                 <div>
                     <label class="form-label fw-bold">
@@ -66,7 +66,7 @@
                 <button type="submit">Envoyer</button>
 
             </form>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'TgNivPB', this.paiement.value)">
+            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'TgNivPB', this.quantite.value)">
 
                 <div>
                     <label class="form-label fw-bold">
@@ -79,7 +79,7 @@
                 <button type="submit">Envoyer</button>
 
             </form>
-            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'TrNivPB', this.paiement.value)">
+            <form onsubmit="event.preventDefault(); envoyerMQTT('ALARMES', 'TrNivPB', this.quantite.value)">
 
                 <div>
                     <label class="form-label fw-bold">
@@ -183,9 +183,11 @@
     socket.on('ALARMES', function (data) {
         console.log(data.capteur);
         console.log(data.texte);
-        const element = document.getElementById(capteur);
+       const capteur = data.capteur;
+    const texte = String(data.texte).trim().toUpperCase();
+    const element = document.getElementById(capteur);
 
-        if (!element) return;
+    if (!element || (texte !== 'ON' && texte !== 'OFF')) return;
 
         const nombre = Number(texte);
         let valide = false;
