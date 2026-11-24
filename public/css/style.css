@@ -163,3 +163,34 @@ button {
         font-size: 28px;
     }
 }
+#bandeauAlarme {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+
+    background-color: #c00000;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+#bandeauAlarme[hidden] {
+    display: none;
+}
+
+#popup {
+    border: 2px solid red;
+    border-radius: 10px;
+    padding: 25px;
+}
+
+#popup::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+body:has(#bandeauAlarme:not([hidden])) {
+    padding-top: 55px;
+}

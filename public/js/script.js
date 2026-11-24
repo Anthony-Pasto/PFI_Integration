@@ -20,3 +20,55 @@ function envoyerMQTT_ACK( capteur) {
         valeur: 1
     });
 }
+
+socket.on("alarme", function(data) {
+
+    const popup = document.getElementById("popup");
+    const bandeau = document.getElementById("bandeauAlarme");
+
+    if (!popup || !bandeau) return;
+
+    // Alarme désactivée
+    if (!data.active) {
+        popup.close();
+        bandeau.hidden = true;
+        return;
+    }
+
+    // Utilisateur sur la page concernée
+    if (window.location.pathname === data.page) {
+        popup.close();
+
+        bandeau.textContent = data.message;
+        bandeau.hidden = false;
+    }
+
+    // Utilisateur sur une autre page
+    else {
+        bandeau.hidden = true;
+
+        afficherPopup(data.titre, data.message, data.page);
+    }
+});
+
+// Affichage de la pop-up
+function afficherPopup(titre, message, page) {
+
+    const popup = document.getElementById("popup");
+
+    document.getElementById("popupTitre").textContent = titre;
+    document.getElementById("popupMessage").textContent = message;
+
+    document.getElementById("popupRedirection").onclick = function() {
+        window.location.href = page;
+    };
+
+    if (!popup.open) {
+        popup.showModal();
+    }
+}
+
+// Fermeture de la pop-up
+function fermerPopup() {
+    document.getElementById("popup").close();
+}

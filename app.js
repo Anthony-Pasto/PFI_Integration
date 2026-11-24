@@ -131,6 +131,45 @@ const alarmes = {
   ALR_CNX_BAL: { etatPi: null, memorisee: false },
   ALR_CNX_POW: { etatPi: null, memorisee: false }
 };
+let dernierEtatPopup = "";
+function actualiserPopup(socket = null) {
+
+  const alarmesActives = Object.entries(alarmes)
+    .filter(([capteur, alarme]) => alarme.memorisee)
+    .map(([capteur, alarme]) => capteur);
+
+  const messages = {
+    ALR_GB_OVF: "Débordement du gros bassin !",
+    ALR_PB_OVF: "Débordement du petit bassin !",
+    ALR_GB_NIV_MAX: "Niveau maximal du gros bassin !",
+    ALR_PB_NIV_MAX: "Niveau maximal du petit bassin !",
+    ALR_CNX_BAL: "Perte de connexion avec la balance !",
+    ALR_CNX_POW: "Perte de connexion avec le PowerMeter !"
+  };
+
+  const data = {
+    active: alarmesActives.length > 0,
+    titre: "ALARME",
+    message: alarmesActives
+      .map(capteur => messages[capteur])
+      .join(" | "),
+    page: "/alarmes"
+  };
+
+  const nouvelEtat = JSON.stringify(data);
+
+  // Nouvelle connexion ou changement de page
+  if (socket !== null) {
+    socket.emit("alarme", data);
+    return;
+  }
+
+  // Envoyer uniquement si une alarme a changé
+  if (nouvelEtat !== dernierEtatPopup) {
+    dernierEtatPopup = nouvelEtat;
+    io.emit("alarme", data);
+  }
+}
 
 client.on('message', function (topic, message) {
   const [element, gestion, lecture, capteur] = topic.toString().split('/');
@@ -143,16 +182,17 @@ client.on('message', function (topic, message) {
     if (texte !== 'ON' && texte !== 'OFF') return;
 
     const alarme = alarmes[capteur];
-    alarme.etatPi = texte;
+ alarme.etatPi = texte;
+  alarme.memorisee = (texte === 'ON');
 
-    if (texte === 'ON') alarme.memorisee = true;
-    if(texte=== 'OFF')alarme.memorisee = false;
+  io.emit('ALARMES', {
+    capteur,
+    texte: alarme.memorisee ? 'ON' : 'OFF'
+  });
 
-    io.emit('ALARMES', {
-      capteur,
-      texte: alarme.memorisee ? 'ON' : 'OFF'
-    });
-    return;
+  actualiserPopup();
+
+  return;
   }
 
 
@@ -173,6 +213,7 @@ client.on('message', function (topic, message) {
 io.on('connection', function (socket) {
 
   console.log('Client Web connecté :', socket.id);
+    actualiserPopup(socket);
   if (dernierModePanneau !== undefined) {
     socket.emit('PANNEAU', { capteur: 'Mode', texte: dernierModePanneau });
   }
@@ -191,6 +232,7 @@ io.on('connection', function (socket) {
 
     alarme.memorisee = false;
     io.emit('ALARMES', { capteur, texte: 'OFF' });
+      actualiserPopup();
   });
 
   socket.on('commandeMQTT', function (data) {
